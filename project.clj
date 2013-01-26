@@ -1,4 +1,4 @@
-(defproject ring-codec "0.1.0-SNAPSHOT"
+(defproject ring/ring-codec "0.1.0-SNAPSHOT"
   :description "Library for encoding and decoding data"
   :url "http://example.com/FIXME"
   :license {:name "The MIT License"
