@@ -1,5 +1,7 @@
 # Ring-Codec
 
+[![Build Status](https://secure.travis-ci.org/ring-clojure/ring-codec.png)](http://travis-ci.org/ring-clojure/ring-codec)
+
 Functions for encoding and decoding data into formats commonly used in
 web applications.
 
