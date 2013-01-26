@@ -1,13 +1,16 @@
-# ring-codec
+# Ring-Codec
 
-A Clojure library designed to ... well, that part is up to you.
+Functions for encoding and decoding data into formats commonly used in
+web applications.
 
-## Usage
+## Installation
 
-FIXME
+To install, add the following to your project `:dependencies`:
+
+    [ring/ring-codec "0.1.0-SNAPSHOT"]
 
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2013 James Reeves
 
-Distributed under the Eclipse Public License, the same as Clojure.
+Distributed under the MIT License, the same as Ring.
