@@ -1,6 +1,6 @@
 (defproject ring/ring-codec "0.1.0-SNAPSHOT"
   :description "Library for encoding and decoding data"
-  :url "http://example.com/FIXME"
+  :url "https://github.com/ring-clojure/ring-codec"
   :license {:name "The MIT License"
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.3.0"]
