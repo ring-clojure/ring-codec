@@ -47,7 +47,7 @@
   specified encoding, or UTF-8 by default."
   [^String encoded & [^String encoding]]
   (str/replace encoded
-               #"(?:%..)+"
+               #"(?:%[a-fA-F0-9]{2})+"
                (fn [chars]
                  (-> ^bytes (parse-bytes chars)
                      (String. (or encoding "UTF-8"))
