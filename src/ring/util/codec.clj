@@ -23,7 +23,7 @@
 (def ^:private string-replace-bug?
   (= "x" (str/replace "x" #"." (fn [x] "$0"))))
 
-(defmacro fix-string-replace-bug [x]
+(defmacro ^:no-doc fix-string-replace-bug [x]
   (if string-replace-bug?
     `(double-escape ~x)
     x))
@@ -78,7 +78,7 @@
   [^String encoded]
   (Base64/decodeBase64 (.getBytes encoded)))
 
-(defprotocol FormEncodeable
+(defprotocol ^:no-doc FormEncodeable
   (form-encode* [x encoding]))
 
 (extend-protocol FormEncodeable
