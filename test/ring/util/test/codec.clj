@@ -9,6 +9,7 @@
   (is (= (percent-encode "foo") "%66%6F%6F")))
 
 (deftest test-percent-decode
+  (is (= (percent-decode "%s/") "%s/"))
   (is (= (percent-decode "%20") " "))
   (is (= (percent-decode "foo%20bar") "foo bar"))
   (is (= (percent-decode "foo%FE%FF%00%2Fbar" "UTF-16") "foo/bar"))
