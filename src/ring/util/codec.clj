@@ -57,16 +57,19 @@
   "Returns the url-encoded version of the given string, using either a specified
   encoding or UTF-8 by default."
   [unencoded & [encoding]]
-  (str/replace
-    unencoded
-    #"[^A-Za-z0-9_~.+-]+"
-    #(double-escape (percent-encode % encoding))))
+  (some-> unencoded
+    (str/replace
+      #"[^A-Za-z0-9_~.+-]+"
+      #(double-escape (percent-encode % encoding)))
+    (.replace "+" "%2B")))
 
 (defn ^String url-decode
   "Returns the url-decoded version of the given string, using either a specified
   encoding or UTF-8 by default. If the encoding is invalid, nil is returned."
   [encoded & [encoding]]
-  (percent-decode encoded encoding))
+  (some-> encoded
+    (.replace "+" " ")
+    (percent-decode encoding)))
 
 (defn base64-encode
   "Encode an array of bytes into a base64 encoded string."
