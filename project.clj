@@ -3,7 +3,7 @@
   :url "https://github.com/ring-clojure/ring-codec"
   :license {:name "The MIT License"
             :url "http://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.6.0"]
+  :dependencies [[org.clojure/clojure "1.3.0"]
                  [commons-codec "1.6"]]
   :plugins [[codox "0.8.0"]]
   :codox {:src-dir-uri "http://github.com/ring-clojure/ring-codec/blob/1.0.0/"

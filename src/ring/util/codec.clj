@@ -57,7 +57,7 @@
   "Returns the url-encoded version of the given string, using either a specified
   encoding or UTF-8 by default."
   [unencoded & [encoding]]
-  (some-> unencoded
+  (-> unencoded
     (str/replace
       #"[^A-Za-z0-9_~.+-]+"
       #(double-escape (percent-encode % encoding)))
@@ -67,7 +67,7 @@
   "Returns the url-decoded version of the given string, using either a specified
   encoding or UTF-8 by default. If the encoding is invalid, nil is returned."
   [encoded & [encoding]]
-  (some-> encoded
+  (-> encoded
     (.replace "+" " ")
     (percent-decode encoding)))
 
