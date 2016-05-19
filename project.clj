@@ -1,4 +1,4 @@
-(defproject ring/ring-codec "1.0.0"
+(defproject ring/ring-codec "1.0.1"
   :description "Library for encoding and decoding data"
   :url "https://github.com/ring-clojure/ring-codec"
   :license {:name "The MIT License"
