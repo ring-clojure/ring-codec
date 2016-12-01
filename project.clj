@@ -4,7 +4,7 @@
   :license {:name "The MIT License"
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.3.0"]
-                 [commons-codec "1.6"]]
+                 [commons-codec "1.10"]]
   :plugins [[lein-codox "0.9.5"]]
   :codox
   {:output-path "codox"
