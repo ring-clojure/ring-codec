@@ -4,7 +4,8 @@
   (:import java.io.File
            java.util.Map
            [java.net URLEncoder URLDecoder]
-           org.apache.commons.codec.binary.Base64))
+           org.apache.commons.codec.binary.Base64
+           org.apache.commons.codec.net.URLCodec))
 
 (defn assoc-conj
   "Associate a key with a value in a map. If the key already exists in the map,
@@ -112,7 +113,8 @@
   or UTF-8 by default."
   [^String encoded & [encoding]]
   (try
-    (URLDecoder/decode encoded (or encoding "UTF-8"))
+    (let [codec (URLCodec. (or encoding "UTF-8"))]
+      (.decode codec encoded))
     (catch Exception _ nil)))
 
 (defn form-decode
