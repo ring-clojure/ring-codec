@@ -18,7 +18,7 @@
 (deftest test-url-encode
   (is (= (url-encode "foo/bar") "foo%2Fbar"))
   (is (= (url-encode "foo/bar" "UTF-16") "foo%FE%FF%00%2Fbar"))
-  (is (= (url-encode "foo+bar") "foo+bar"))
+  (is (= (url-encode "foo+bar") "foo%2Bbar"))
   (is (= (url-encode "foo bar") "foo%20bar")))
 
 (deftest test-url-decode
