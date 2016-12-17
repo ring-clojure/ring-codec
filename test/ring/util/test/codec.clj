@@ -58,5 +58,5 @@
     "foo+bar" "foo bar"
     "a=b+c"   {"a" "b c"}
     "a=b%2Fc" {"a" "b/c"})
-  (is (= (form-decode "a=foo%FE%FF%00%2Fbar" "UTF-16")
+  (is (= (form-decode "%FE%FF%00a=%FE%FF%00f%00o%00o%00%2F%00b%00a%00r" "UTF-16")
          {"a" "foo/bar"})))
