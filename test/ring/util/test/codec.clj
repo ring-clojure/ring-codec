@@ -42,6 +42,7 @@
       {"a" "b"} "a=b"
       {:a "b"}  "a=b"
       {"a" 1}   "a=1"
+      {"a" nil} "a="
       {"a" "b" "c" "d"} "a=b&c=d"
       {"a" "b c"}       "a=b+c")
     (is (= (form-encode {"a" "foo/bar"} "UTF-16") "a=foo%FE%FF%00%2Fbar"))))
