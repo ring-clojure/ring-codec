@@ -1,30 +1,19 @@
 (ns ring.util.test.codec
-  (:use clojure.test
-        ring.util.codec)
-  (:import java.util.Arrays))
-
-(deftest test-percent-encode
-  (is (= (percent-encode " ") "%20"))
-  (is (= (percent-encode "+") "%2B"))
-  (is (= (percent-encode "foo") "%66%6F%6F")))
-
-(deftest test-percent-decode
-  (is (= (percent-decode "%s/") "%s/"))
-  (is (= (percent-decode "%20") " "))
-  (is (= (percent-decode "foo%20bar") "foo bar"))
-  (is (= (percent-decode "foo%FE%FF%00%2Fbar" "UTF-16") "foo/bar"))
-  (is (= (percent-decode "%24") "$")))
+  (:require [clojure.test :refer :all]
+            [ring.util.codec :refer :all])
+  (:import java.util.Arrays
+           org.apache.commons.codec.DecoderException))
 
 (deftest test-url-encode
   (is (= (url-encode "foo/bar") "foo%2Fbar"))
-  (is (= (url-encode "foo/bar" "UTF-16") "foo%FE%FF%00%2Fbar"))
-  (is (= (url-encode "foo+bar") "foo+bar"))
-  (is (= (url-encode "foo bar") "foo%20bar")))
+  (is (= (url-encode "foo/bar" "UTF-16") "%FE%FF%00f%00o%00o%00%2F%00b%00a%00r"))
+  (is (= (url-encode "foo+bar") "foo%2Bbar"))
+  (is (= (url-encode "foo bar") "foo+bar")))
 
 (deftest test-url-decode
   (is (= (url-decode "foo%2Fbar") "foo/bar" ))
-  (is (= (url-decode "foo%FE%FF%00%2Fbar" "UTF-16") "foo/bar"))
-  (is (= (url-decode "%") "%")))
+  (is (= (url-decode "%FE%FF%00f%00o%00o%00%2F%00b%00a%00r" "UTF-16") "foo/bar"))
+  (is (thrown? DecoderException (url-decode "%"))))
 
 (deftest test-base64-encoding
   (let [str-bytes (.getBytes "foo?/+" "UTF-8")]
@@ -59,5 +48,5 @@
     "foo+bar" "foo bar"
     "a=b+c"   {"a" "b c"}
     "a=b%2Fc" {"a" "b/c"})
-  (is (= (form-decode "a=foo%FE%FF%00%2Fbar" "UTF-16")
+  (is (= (form-decode "%FE%FF%00a=%FE%FF%00f%00o%00o%00%2F%00b%00a%00r" "UTF-16")
          {"a" "foo/bar"})))
