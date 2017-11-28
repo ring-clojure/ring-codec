@@ -92,7 +92,7 @@
       (->> params
            (mapcat
             (fn [[k v]]
-              (if (or (seq? v) (sequential? v) )
+              (if (or (seq? v) (sequential? v) (set? v))
                 (map #(encode-param [k %]) v)
                 [(encode-param [k v])])))
            (str/join "&"))))
