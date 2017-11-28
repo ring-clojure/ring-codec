@@ -5,7 +5,7 @@
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.3.0"]
                  [commons-codec "1.10"]]
-  :plugins [[lein-codox "0.9.5"]]
+  :plugins [[lein-codox "0.10.3"]]
   :codox
   {:output-path "codox"
    :source-uri "http://github.com/ring-clojure/ring-codec/blob/{version}/{filepath}#L{line}"}
