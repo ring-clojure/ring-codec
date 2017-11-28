@@ -39,12 +39,16 @@
     (is (= (form-encode "foo/bar" "UTF-16") "foo%FE%FF%00%2Fbar")))
   (testing "maps"
     (are [x y] (= (form-encode x) y)
-      {"a" "b"} "a=b"
-      {:a "b"}  "a=b"
-      {"a" 1}   "a=1"
-      {"a" nil} "a="
+      {"a" "b"}         "a=b"
+      {:a "b"}          "a=b"
+      {"a" 1}           "a=1"
+      {"a" nil}         "a="
       {"a" "b" "c" "d"} "a=b&c=d"
-      {"a" "b c"}       "a=b+c")
+      {"a" "b c"}       "a=b+c"
+      {"a" ["b" "c"]}   "a=b&a=c"
+      {"a" ["c" "b"]}   "a=c&a=b"
+      {"a" (seq [1 2])} "a=1&a=2"
+      {"a" #{"c" "b"}}  "a=b&a=c")
     (is (= (form-encode {"a" "foo/bar"} "UTF-16") "a=foo%FE%FF%00%2Fbar"))))
 
 (deftest test-form-decode-str

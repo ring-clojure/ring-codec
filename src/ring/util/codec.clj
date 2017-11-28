@@ -96,13 +96,14 @@
   Map
   (form-encode* [params encoding]
     (letfn [(encode [x] (form-encode* x encoding))
-            (encode-param [[k v]] (str (encode (name k)) "=" (encode v)))]
+            (encode-param [k v] (str (encode (name k)) "=" (encode v)))]
       (->> params
            (mapcat
             (fn [[k v]]
-              (if (or (seq? v) (sequential? v) )
-                (map #(encode-param [k %]) v)
-                [(encode-param [k v])])))
+              (cond
+                (sequential? v) (map #(encode-param k %) v)
+                (set? v)        (sort (map #(encode-param k %) v))
+                :else           (list (encode-param k v)))))
            (str/join "&"))))
   Object
   (form-encode* [x encoding]
