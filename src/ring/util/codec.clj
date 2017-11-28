@@ -98,7 +98,9 @@
            (str/join "&"))))
   Object
   (form-encode* [x encoding]
-    (form-encode* (str x) encoding)))
+    (form-encode* (str x) encoding))
+  nil
+  (form-encode* [x encoding] ""))
 
 (defn form-encode
   "Encode the supplied value into www-form-urlencoded format, often used in
