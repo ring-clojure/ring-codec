@@ -62,6 +62,9 @@
     "a=b&c=d" {"a" "b" "c" "d"}
     "foo+bar" "foo bar"
     "a=b+c"   {"a" "b c"}
-    "a=b%2Fc" {"a" "b/c"})
+    "a=b%2Fc" {"a" "b/c"}
+    "a=b&c"   {"a" "b" "c" ""}
+    "a=&b=c"  {"a" "" "b" "c"}
+    "a&b=c"   {"a" "" "b" "c"})
   (is (= (form-decode "a=foo%FE%FF%00%2Fbar" "UTF-16")
          {"a" "foo/bar"})))
