@@ -1,7 +1,8 @@
 (ns ring.util.test.codec
   (:use clojure.test
         ring.util.codec)
-  (:import java.util.Arrays))
+  (:import java.util.Arrays
+           clojure.lang.ExceptionInfo))
 
 (deftest test-percent-encode
   (is (= (percent-encode " ") "%20"))
@@ -53,7 +54,11 @@
 
 (deftest test-form-decode-str
   (is (= (form-decode-str "foo=bar+baz") "foo=bar baz"))
-  (is (nil? (form-decode-str "%D"))))
+  (is (nil? (form-decode-str "%D")))
+  (is (thrown-with-msg?
+       ExceptionInfo
+       #"encoding must be a String"
+       (form-decode-str "foo" nil))))
 
 (deftest test-form-decode
   (are [x y] (= (form-decode x) y)
