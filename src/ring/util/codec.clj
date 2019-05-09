@@ -126,6 +126,9 @@
   ([encoded]
    (form-decode-str encoded "UTF-8"))
   ([^String encoded encoding]
+   (when-not (string? encoding)
+     (throw (ex-info "encoding must be a String"
+                     {:encoded encoded :encoding encoding})))
    (try
      (URLDecoder/decode encoded encoding)
      (catch Exception _ nil))))
