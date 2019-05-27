@@ -91,7 +91,7 @@
 
 (extend-protocol FormEncodeable
   String
-  (form-encode* [unencoded encoding]
+  (form-encode* [^String unencoded ^String encoding]
     (URLEncoder/encode unencoded encoding))
   Map
   (form-encode* [params encoding]
@@ -125,7 +125,7 @@
   or UTF-8 by default."
   ([encoded]
    (form-decode-str encoded "UTF-8"))
-  ([^String encoded encoding]
+  ([^String encoded ^String encoding]
    (try
      (URLDecoder/decode encoded encoding)
      (catch Exception _ nil))))
