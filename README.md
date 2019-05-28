@@ -9,7 +9,7 @@ web applications.
 
 To install, add the following to your project `:dependencies`:
 
-    [ring/ring-codec "1.1.1"]
+    [ring/ring-codec "1.1.2"]
 
 ## Documentation
 
