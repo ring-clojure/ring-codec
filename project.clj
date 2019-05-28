@@ -9,10 +9,11 @@
   :codox
   {:output-path "codox"
    :source-uri "http://github.com/ring-clojure/ring-codec/blob/{version}/{filepath}#L{line}"}
-  :aliases {"test-all" ["with-profile" "default:+1.6:+1.7:+1.8:+1.9" "test"]}
+  :aliases {"test-all" ["with-profile" "default:+1.6:+1.7:+1.8:+1.9:+1.10" "test"]}
   :profiles
-  {:dev {:dependencies [[criterium "0.4.4"]]}
-   :1.6 {:dependencies [[org.clojure/clojure "1.6.0"]]}
-   :1.7 {:dependencies [[org.clojure/clojure "1.7.0"]]}
-   :1.8 {:dependencies [[org.clojure/clojure "1.8.0"]]}
-   :1.9 {:dependencies [[org.clojure/clojure "1.9.0"]]}})
+  {:dev  {:dependencies [[criterium "0.4.4"]]}
+   :1.6  {:dependencies [[org.clojure/clojure "1.6.0"]]}
+   :1.7  {:dependencies [[org.clojure/clojure "1.7.0"]]}
+   :1.8  {:dependencies [[org.clojure/clojure "1.8.0"]]}
+   :1.9  {:dependencies [[org.clojure/clojure "1.9.0"]]}
+   :1.10 {:dependencies [[org.clojure/clojure "1.10.0"]]}})
