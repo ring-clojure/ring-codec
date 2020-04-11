@@ -71,8 +71,8 @@
     "=b"      {"" "b"})
   (testing "invalid URL encoding"
     (are [x y] (= (form-decode x) y)
-      "%=b" {nil "b"}
-      "a=%" {"a" nil}
-      "%=%" {nil nil}))
+      "%=b" {}
+      "a=%" {}
+      "%=%" {}))
   (is (= (form-decode "a=foo%FE%FF%00%2Fbar" "UTF-16")
          {"a" "foo/bar"})))

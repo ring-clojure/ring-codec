@@ -141,8 +141,11 @@
      (form-decode-str encoded encoding)
      (reduce
       (fn [m param]
-        (if-let [[k v] (str/split param #"=" 2)]
-          (assoc-conj m (form-decode-str k encoding) (form-decode-str (or v "") encoding))
-          m))
+        (let [[k v] (str/split param #"=" 2)
+              k     (form-decode-str k encoding)
+              v     (form-decode-str (or v "") encoding)]
+          (if (and k v)
+            (assoc-conj m k v)
+            m)))
       {}
       (str/split encoded #"&")))))
