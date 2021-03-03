@@ -1,10 +1,9 @@
 (ns ring.util.codec
   "Functions for encoding and decoding data."
   (:require [clojure.string :as str])
-  (:import java.io.File
-           java.util.Map
+  (:import java.util.Map
            [java.net URLEncoder URLDecoder]
-           org.apache.commons.codec.binary.Base64))
+           [java.util Base64]))
 
 (defn assoc-conj
   "Associate a key with a value in a map. If the key already exists in the map,
@@ -79,12 +78,12 @@
 (defn base64-encode
   "Encode an array of bytes into a base64 encoded string."
   [unencoded]
-  (String. (Base64/encodeBase64 unencoded)))
+  (String. (.encode (Base64/getEncoder) unencoded)))
 
 (defn base64-decode
   "Decode a base64 encoded string into an array of bytes."
   [^String encoded]
-  (Base64/decodeBase64 (.getBytes encoded)))
+  (.decode (Base64/getDecoder) encoded))
 
 (defprotocol ^:no-doc FormEncodeable
   (form-encode* [x encoding]))
