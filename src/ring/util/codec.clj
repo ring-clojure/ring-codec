@@ -5,6 +5,8 @@
            [java.net URLEncoder URLDecoder]
            [java.util Base64]))
 
+(set! *warn-on-reflection* true)
+
 (defn assoc-conj
   "Associate a key with a value in a map. If the key already exists in the map,
   a vector of values is associated with the key."
@@ -77,7 +79,7 @@
 
 (defn base64-encode
   "Encode an array of bytes into a base64 encoded string."
-  [unencoded]
+  [^bytes unencoded]
   (String. (.encode (Base64/getEncoder) unencoded)))
 
 (defn base64-decode
