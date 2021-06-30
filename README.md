@@ -13,7 +13,7 @@ To install, add the following to your project `:dependencies`:
 
 ## Documentation
 
-* [API Docs](http://ring-clojure.github.com/ring-codec/ring.util.codec.html)
+* [API Docs](http://ring-clojure.github.io/ring-codec/ring.util.codec.html)
 
 ## License
 
