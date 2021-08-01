@@ -53,7 +53,9 @@
 
 (deftest test-form-decode-str
   (is (= (form-decode-str "foo=bar+baz") "foo=bar baz"))
-  (is (nil? (form-decode-str "%D"))))
+  (is (nil? (form-decode-str "%D")))
+  (is (= (form-decode-str "foo=bar+baz" nil) "foo=bar baz"))
+  (is (= (form-decode-str "foo=bar+baz" "UTF-8") "foo=bar baz")))
 
 (deftest test-form-decode
   (are [x y] (= (form-decode x) y)
@@ -75,4 +77,6 @@
       "a=%" {}
       "%=%" {}))
   (is (= (form-decode "a=foo%FE%FF%00%2Fbar" "UTF-16")
+         {"a" "foo/bar"}))
+  (is (= (form-decode "a=foo%2Fbar" nil)
          {"a" "foo/bar"})))

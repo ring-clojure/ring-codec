@@ -126,7 +126,7 @@
    (form-decode-str encoded "UTF-8"))
   ([^String encoded ^String encoding]
    (try
-     (URLDecoder/decode encoded encoding)
+     (URLDecoder/decode encoded ^String (or encoding "UTF-8"))
      (catch Exception _ nil))))
 
 (defn form-decode
