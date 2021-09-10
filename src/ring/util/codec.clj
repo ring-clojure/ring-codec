@@ -2,8 +2,9 @@
   "Functions for encoding and decoding data."
   (:require [clojure.string :as str])
   (:import java.util.Map
+           clojure.lang.MapEntry
            [java.net URLEncoder URLDecoder]
-           [java.util Base64]))
+           [java.util Base64 StringTokenizer]))
 
 (defn assoc-conj
   "Associate a key with a value in a map. If the key already exists in the map,
@@ -129,6 +130,22 @@
      (URLDecoder/decode encoded ^String (or encoding "UTF-8"))
      (catch Exception _ nil))))
 
+(defn- tokenized [s delim]
+  (reify clojure.lang.IReduceInit
+    (reduce [_ f init]
+      (let [tokenizer (StringTokenizer. s delim)]
+        (loop [result init]
+          (if (.hasMoreTokens tokenizer)
+            (recur (f result (.nextToken tokenizer)))
+            result))))))
+
+(defn- split-key-value-pair [^String s]
+  (let [i (.indexOf s #=(int \=))]
+    (cond
+      (pos? i)  (MapEntry. (.substring s 0 i) (.substring s (inc i)))
+      (zero? i) (MapEntry. "" (.substring s (inc i)))
+      :else     (MapEntry. s ""))))
+
 (defn form-decode
   "Decode the supplied www-form-urlencoded string using the specified encoding,
   or UTF-8 by default. If the encoded value is a string, a string is returned.
@@ -140,11 +157,11 @@
      (form-decode-str encoded encoding)
      (reduce
       (fn [m param]
-        (let [[k v] (str/split param #"=" 2)
-              k     (form-decode-str k encoding)
-              v     (form-decode-str (or v "") encoding)]
+        (let [kv (split-key-value-pair param)
+              k  (form-decode-str (key kv) encoding)
+              v  (form-decode-str (val kv) encoding)]
           (if (and k v)
             (assoc-conj m k v)
             m)))
       {}
-      (str/split encoded #"&")))))
+      (tokenized encoded "&")))))
