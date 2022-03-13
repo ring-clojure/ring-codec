@@ -38,11 +38,16 @@
         (map (partial format "%%%02X"))
         (str/join))))
 
-(defn- parse-bytes [encoded-bytes]
-  (->> (re-seq #"%[A-Za-z0-9]{2}" encoded-bytes)
-       (map #(subs % 1))
-       (map #(.byteValue (Integer/valueOf % 16)))
-       (byte-array)))
+(defn- parse-bytes ^bytes [encoded-bytes]
+  (let [encoded-len (count encoded-bytes)
+        bs (byte-array (/ encoded-len 3))]
+    (loop [encoded-index 1, byte-index 0]
+      (if (< encoded-index encoded-len)
+        (let [encoded-byte (subs encoded-bytes encoded-index (+ encoded-index 2))
+              b (.byteValue (Integer/valueOf encoded-byte 16))]
+          (aset bs byte-index b)
+          (recur (+ encoded-index 3) (inc byte-index)))
+        bs))))
 
 (defn percent-decode
   "Decode every percent-encoded character in the given string using the
@@ -53,7 +58,7 @@
    (str/replace encoded
                 #"(?:%[A-Za-z0-9]{2})+"
                 (fn [chars]
-                  (-> ^bytes (parse-bytes chars)
+                  (-> (parse-bytes chars)
                       (String. encoding)
                       (fix-string-replace-bug))))))
 
