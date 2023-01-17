@@ -125,15 +125,21 @@
   ([x encoding]
    (form-encode* x encoding)))
 
+(defn- form-encoded-chars? [^String s]
+  (or (.contains s "+") (.contains s "%")))
+
 (defn form-decode-str
   "Decode the supplied www-form-urlencoded string using the specified encoding,
   or UTF-8 by default."
   ([encoded]
    (form-decode-str encoded "UTF-8"))
-  ([^String encoded ^String encoding]
-   (try
-     (URLDecoder/decode encoded ^String (or encoding "UTF-8"))
-     (catch Exception _ nil))))
+  ([^String encoded encoding]
+   (if (form-encoded-chars? encoded)
+     (try
+       (let [^String encoding (or encoding "UTF-8")]
+         (URLDecoder/decode encoded encoding))
+       (catch Exception _ nil))
+     encoded)))
 
 (defn- tokenized [s delim]
   (reify clojure.lang.IReduceInit
