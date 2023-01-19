@@ -1,7 +1,8 @@
 (ns ring.util.test.codec
   (:use clojure.test
         ring.util.codec)
-  (:import java.util.Arrays))
+  (:import java.util.Arrays
+           java.nio.charset.Charset))
 
 (deftest test-percent-encode
   (is (= (percent-encode " ") "%20"))
@@ -17,7 +18,10 @@
 
 (deftest test-url-encode
   (is (= (url-encode "foo/bar") "foo%2Fbar"))
+  (is (= (url-encode "foo/bar" nil) "foo%2Fbar"))
+  (is (= (url-encode "foo/bar" "UTF-8") "foo%2Fbar"))
   (is (= (url-encode "foo/bar" "UTF-16") "foo%FE%FF%00%2Fbar"))
+  (is (= (url-encode "foo/bar" (Charset/forName "UTF-16")) "foo%FE%FF%00%2Fbar"))
   (is (= (url-encode "foo+bar") "foo+bar"))
   (is (= (url-encode "foo bar") "foo%20bar")))
 

@@ -3,6 +3,7 @@
   (:require [clojure.string :as str])
   (:import java.util.Map
            clojure.lang.MapEntry
+           java.nio.charset.Charset
            [java.net URLEncoder URLDecoder]
            [java.util Base64 StringTokenizer]))
 
@@ -28,13 +29,18 @@
     `(double-escape ~x)
     x))
 
+(def ^:private ^Charset utf-8 (Charset/forName "UTF-8"))
+
+(defn- ^Charset to-charset [s]
+  (if (nil? s) utf-8 (if (string? s) (Charset/forName s) s)))
+
 (defn percent-encode
   "Percent-encode every character in the given string using either the specified
   encoding, or UTF-8 by default."
   ([unencoded]
-   (percent-encode unencoded "UTF-8"))
-  ([^String unencoded ^String encoding]
-   (->> (.getBytes unencoded encoding)
+   (percent-encode unencoded utf-8))
+  ([^String unencoded encoding]
+   (->> (.getBytes unencoded (to-charset encoding))
         (map (partial format "%%%02X"))
         (str/join))))
 
@@ -53,33 +59,35 @@
   "Decode every percent-encoded character in the given string using the
   specified encoding, or UTF-8 by default."
   ([encoded]
-   (percent-decode encoded "UTF-8"))
-  ([^String encoded ^String encoding]
-   (str/replace encoded
-                #"(?:%[A-Fa-f0-9]{2})+"
-                (fn [chars]
-                  (-> (parse-bytes chars)
-                      (String. encoding)
-                      (fix-string-replace-bug))))))
+   (percent-decode encoded utf-8))
+  ([^String encoded encoding]
+   (let [encoding (to-charset encoding)]
+     (str/replace encoded
+                  #"(?:%[A-Fa-f0-9]{2})+"
+                  (fn [chars]
+                    (-> (parse-bytes chars)
+                        (String. encoding)
+                        (fix-string-replace-bug)))))))
 
 (defn url-encode
   "Returns the url-encoded version of the given string, using either a specified
   encoding or UTF-8 by default."
   ([unencoded]
-   (url-encode unencoded "UTF-8"))
+   (url-encode unencoded utf-8))
   ([unencoded encoding]
-   (str/replace
-    unencoded
-    #"[^A-Za-z0-9_~.+-]+"
-    #(double-escape (percent-encode % encoding)))))
+   (let [encoding (to-charset encoding)]
+     (str/replace
+      unencoded
+      #"[^A-Za-z0-9_~.+-]+"
+      #(double-escape (percent-encode % encoding))))))
 
 (defn ^String url-decode
   "Returns the url-decoded version of the given string, using either a specified
   encoding or UTF-8 by default. If the encoding is invalid, nil is returned."
   ([encoded]
-   (url-decode encoded "UTF-8"))
+   (url-decode encoded utf-8))
   ([encoded encoding]
-   (percent-decode encoded encoding)))
+   (percent-decode encoded (to-charset encoding))))
 
 (defn base64-encode
   "Encode an array of bytes into a base64 encoded string."
@@ -97,7 +105,7 @@
 (extend-protocol FormEncodeable
   String
   (form-encode* [^String unencoded ^String encoding]
-    (URLEncoder/encode unencoded encoding))
+    (URLEncoder/encode unencoded (to-charset encoding)))
   Map
   (form-encode* [params encoding]
     (letfn [(encode [x] (form-encode* x encoding))
@@ -121,7 +129,7 @@
   URL query strings and POST request bodies, using the specified encoding.
   If the encoding is not specified, it defaults to UTF-8"
   ([x]
-   (form-encode x "UTF-8"))
+   (form-encode x utf-8))
   ([x encoding]
    (form-encode* x encoding)))
 
@@ -132,12 +140,11 @@
   "Decode the supplied www-form-urlencoded string using the specified encoding,
   or UTF-8 by default."
   ([encoded]
-   (form-decode-str encoded "UTF-8"))
+   (form-decode-str encoded utf-8))
   ([^String encoded encoding]
    (if (form-encoded-chars? encoded)
      (try
-       (let [^String encoding (or encoding "UTF-8")]
-         (URLDecoder/decode encoded encoding))
+       (URLDecoder/decode encoded (to-charset encoding))
        (catch Exception _ nil))
      encoded)))
 
@@ -162,7 +169,7 @@
   or UTF-8 by default. If the encoded value is a string, a string is returned.
   If the encoded value is a map of parameters, a map is returned."
   ([encoded]
-   (form-decode encoded "UTF-8"))
+   (form-decode encoded utf-8))
   ([^String encoded encoding]
    (if-not (.contains encoded "=")
      (form-decode-str encoded encoding)
