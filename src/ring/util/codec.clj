@@ -56,7 +56,7 @@
    (percent-decode encoded "UTF-8"))
   ([^String encoded ^String encoding]
    (str/replace encoded
-                #"(?:%[A-Za-z0-9]{2})+"
+                #"(?:%[A-Fa-f0-9]{2})+"
                 (fn [chars]
                   (-> (parse-bytes chars)
                       (String. encoding)
