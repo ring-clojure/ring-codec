@@ -157,8 +157,10 @@
             (recur (f result (.nextToken tokenizer)))
             result))))))
 
+(def ^:private ^:const kv-separator (int \=))
+
 (defn- split-key-value-pair [^String s]
-  (let [i (.indexOf s #=(int \=))]
+  (let [i (.indexOf s kv-separator)]
     (cond
       (pos? i)  (MapEntry. (.substring s 0 i) (.substring s (inc i)))
       (zero? i) (MapEntry. "" (.substring s (inc i)))
