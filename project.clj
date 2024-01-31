@@ -3,7 +3,7 @@
   :url "https://github.com/ring-clojure/ring-codec"
   :license {:name "The MIT License"
             :url "http://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.7.0"]]
+  :dependencies [[org.clojure/clojure "1.9.0"]]
   :plugins [[lein-codox "0.10.7"]]
   :codox
   {:output-path "codox"
