@@ -61,6 +61,30 @@
   (is (= (form-decode-str "foo=bar+baz" nil) "foo=bar baz"))
   (is (= (form-decode-str "foo=bar+baz" "UTF-8") "foo=bar baz")))
 
+(deftest test-form-decode-map
+  (are [x y] (= (form-decode-map x) y)
+    "foo"     {"foo" ""}
+    "a=b"     {"a" "b"}
+    "a=b&c=d" {"a" "b" "c" "d"}
+    "foo+bar" {"foo bar" ""}
+    "a=b+c"   {"a" "b c"}
+    "a=b%2Fc" {"a" "b/c"}
+    "a=b&c"   {"a" "b" "c" ""}
+    "a=&b=c"  {"a" "" "b" "c"}
+    "a&b=c"   {"a" "" "b" "c"}
+    "="       {"" ""}
+    "a="      {"a" ""}
+    "=b"      {"" "b"})
+  (testing "invalid URL encoding"
+    (are [x y] (= (form-decode-map x) y)
+      "%=b" {}
+      "a=%" {}
+      "%=%" {}))
+  (is (= (form-decode-map "a=foo%FE%FF%00%2Fbar" "UTF-16")
+         {"a" "foo/bar"}))
+  (is (= (form-decode-map "a=foo%2Fbar" nil)
+         {"a" "foo/bar"})))
+
 (deftest test-form-decode
   (are [x y] (= (form-decode x) y)
     "foo"     "foo"

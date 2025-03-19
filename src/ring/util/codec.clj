@@ -166,6 +166,24 @@
       (zero? i) (MapEntry. "" (.substring s (inc i)))
       :else     (MapEntry. s ""))))
 
+(defn form-decode-map
+  "Decode the supplied www-form-urlencoded string using the specified encoding,
+  or UTF-8 by default. Expects an encoded map of key/value pairs as defined by:
+  https://url.spec.whatwg.org/#urlencoded-parsing"
+  ([encoded]
+   (form-decode-map encoded utf-8))
+  ([^String encoded encoding]
+   (reduce
+    (fn [m param]
+      (let [kv (split-key-value-pair param)
+            k  (form-decode-str (key kv) encoding)
+            v  (form-decode-str (val kv) encoding)]
+        (if (and k v)
+          (assoc-conj m k v)
+          m)))
+    {}
+    (tokenized encoded "&"))))
+
 (defn form-decode
   "Decode the supplied www-form-urlencoded string using the specified encoding,
   or UTF-8 by default. If the encoded value is a string, a string is returned.
@@ -175,13 +193,4 @@
   ([^String encoded encoding]
    (if-not (.contains encoded "=")
      (form-decode-str encoded encoding)
-     (reduce
-      (fn [m param]
-        (let [kv (split-key-value-pair param)
-              k  (form-decode-str (key kv) encoding)
-              v  (form-decode-str (val kv) encoding)]
-          (if (and k v)
-            (assoc-conj m k v)
-            m)))
-      {}
-      (tokenized encoded "&")))))
+     (form-decode-map encoded encoding))))
