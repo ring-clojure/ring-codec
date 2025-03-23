@@ -1,6 +1,4 @@
-# Ring-Codec
-
-[![Build Status](https://app.travis-ci.com/ring-clojure/ring-codec.svg?branch=master)](https://app.travis-ci.com/ring-clojure/ring-codec)
+# Ring-Codec [![Build Status](https://github.com/ring-clojure/ring-codec/actions/workflows/test.yml/badge.svg)](https://github.com/ring-clojure/ring-codec/actions/workflows/test.yml)
 
 Functions for encoding and decoding data into formats commonly used in
 web applications.
