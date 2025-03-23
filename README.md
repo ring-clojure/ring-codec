@@ -15,6 +15,6 @@ To install, add the following to your project `:dependencies`:
 
 ## License
 
-Copyright © 2021 James Reeves
+Copyright © 2025 James Reeves
 
 Distributed under the MIT License, the same as Ring.
