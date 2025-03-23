@@ -8,7 +8,9 @@
   :codox
   {:output-path "codox"
    :source-uri "http://github.com/ring-clojure/ring-codec/blob/{version}/{filepath}#L{line}"}
-  :aliases {"test-all" ["with-profile" "default:+1.10" "test"]}
+  :aliases {"test-all" ["with-profile" "default:+1.10:+1.11:+1.12" "test"]}
   :profiles
   {:dev  {:dependencies [[criterium "0.4.6"]]}
-   :1.10 {:dependencies [[org.clojure/clojure "1.10.3"]]}})
+   :1.10 {:dependencies [[org.clojure/clojure "1.10.3"]]}
+   :1.11 {:dependencies [[org.clojure/clojure "1.11.4"]]}
+   :1.12 {:dependencies [[org.clojure/clojure "1.12.0"]]}})
