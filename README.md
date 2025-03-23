@@ -7,11 +7,11 @@ web applications.
 
 Add the following dependency to your deps.edn file:
 
-    ring/ring-codec {:mvn/version "1.2.0"}
+    ring/ring-codec {:mvn/version "1.3.0"}
 
 Or to your Leiningen project file:
 
-    [ring/ring-codec "1.2.0"]
+    [ring/ring-codec "1.3.0"]
 
 ## Documentation
 
