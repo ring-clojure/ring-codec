@@ -5,7 +5,11 @@ web applications.
 
 ## Installation
 
-To install, add the following to your project `:dependencies`:
+Add the following dependency to your deps.edn file:
+
+    ring/ring-codec {:mvn/version "1.2.0"}
+
+Or to your Leiningen project file:
 
     [ring/ring-codec "1.2.0"]
 
